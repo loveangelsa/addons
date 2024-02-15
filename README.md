@@ -1,4 +1,4 @@
-# KT Add-ons for HAOS
+# 이지빌 Add-ons for HAOS(KTDO79 수정)
  
 HAKorea Addon 및 일부 Addon을 개인 환경(Ezville)에 맞춰 수정 중
 
