@@ -4,6 +4,9 @@
 # This is a part of EzVille Wallpad Addon for Home Assistant
 # Author: Dong SHIN <d0104.shin@gmail.com> 2024-02-15
 
+# This is a part of EzVille Wallpad Addon for Home Assistant
+# Author: Jongeun Han <loveangelsa@gmail.com> 2024-02-16
+
 import socket
 import serial
 import paho.mqtt.client as paho_mqtt
@@ -75,7 +78,7 @@ DISCOVERY_DEVICE = {
     "name": "ezville_wallpad",
     "mf": "EzVille",
     "mdl": "EzVille Wallpad",
-    "sw": "dongs0104/ha_addons/ezville_wallpad",
+    "sw": "loveangelsa/addons/ezville_wallpad",
 }
 
 DISCOVERY_PAYLOAD = {
