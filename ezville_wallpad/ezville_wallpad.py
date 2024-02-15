@@ -478,10 +478,11 @@ def mqtt_device(topics, payload):
     packet = None
     if device == "light":
         if payload == "ON":
-            payload = 0xF1 
-                if idn.startswith("1_1_1") else 0x01  # 거실등만 0xF1
-                if idn.startswith("1_1_2") else 0x01  # 거실등만 0xF1
-                if idn.startswith("1_2_1") else 0x01  # 거실등만 0xF1
+            payload = 0xF1 if idn.startswith("1_1_1") else 0x01  # 거실등만 0xF1
+        if payload == "ON":
+            payload = 0xF1 if idn.startswith("1_1_2") else 0x01  # 거실등만 0xF1
+        if payload == "ON":
+            payload = 0xF1 if idn.startswith("1_2_1") else 0x01  # 거실등만 0xF1
         elif payload == "OFF":
             payload = 0x00
         length = 10
