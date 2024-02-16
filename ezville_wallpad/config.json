@@ -1,5 +1,5 @@
 {
-	"version": "0.0.20240215",
+	"version": "0.0.20240217",
 	"slug": "ezville_wallpad",
 	"name": "EzVille RS485 Addon",
 	"description": "이지빌용 수정된 애드온입니다.",
@@ -24,11 +24,11 @@
 			"stopbits": 1
 		},
 		"socket": {
-			"address": "192.168.0.51",
+			"address": "192.168.0.118",
 			"port": 8899
 		},
 		"mqtt": {
-			"server": "192.168.0.113",
+			"server": "192.168.0.137",
 			"port": 1883,
 			"need_login": true,
 			"user": "loveangelsa",
