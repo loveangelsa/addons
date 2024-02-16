@@ -32,7 +32,7 @@
 			"port": 1883,
 			"need_login": true,
 			"user": "loveangelsa",
-			"passwd": "",
+			"passwd": "S",
 			"discovery": true,
 			"prefix": "ezville"
 		},
