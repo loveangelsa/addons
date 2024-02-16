@@ -55,6 +55,7 @@ RS485_DEVICE = {
             "id": 0x36,
             "cmd": 0x43,
             "ack": 0xC5,
+        }
         "target": {
             "id": 0x36,
             "cmd": 0x44,
