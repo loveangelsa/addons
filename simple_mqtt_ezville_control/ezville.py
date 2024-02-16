@@ -970,4 +970,4 @@ if __name__ == '__main__':
     with open(config_dir + '/options.json') as file:
         CONFIG = json.load(file)
     
-    ezville_loop(config):
+    ezville_loop(config)
