@@ -24,14 +24,14 @@
 			"stopbits": 1
 		},
 		"socket": {
-			"address": "192.168.1.1",
+			"address": "192.168.0.51",
 			"port": 8899
 		},
 		"mqtt": {
-			"server": "127.0.0.1",
+			"server": "192.168.0.113",
 			"port": 1883,
 			"need_login": true,
-			"user": "",
+			"user": "loveangelsa",
 			"passwd": "",
 			"discovery": true,
 			"prefix": "ezville"
