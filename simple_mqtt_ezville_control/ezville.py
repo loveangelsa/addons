@@ -110,9 +110,11 @@ STATE_TOPIC = HA_TOPIC + '/{}/{}/state'
 EW11_TOPIC = 'ew11'
 EW11_SEND_TOPIC = EW11_TOPIC + '/send'
 
-
+with open(config_dir + '/options.json') as file:
+        CONFIG = json.load(file)
+    
 # Main Function
-def ezville_loop():
+def ezville_loop(CONFIG):
     
     # Log 생성 Flag
     debug = config['DEBUG_LOG']
@@ -970,4 +972,4 @@ if __name__ == '__main__':
     with open(config_dir + '/options.json') as file:
         CONFIG = json.load(file)
     
-    ezville_loop()
+    ezville_loop(CONFIG)
