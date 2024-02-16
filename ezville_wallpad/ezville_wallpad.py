@@ -20,52 +20,29 @@ import re
 
 RS485_DEVICE = {
     "light": {
-        "state": {
-            "id": 0x0E,
-            "cmd": 0x81,
-        },
-        "last": {},
-        "power": {
-            "id": 0x0E,
-            "cmd": 0x41,
-            "ack": 0xC1,
-        },
+        "state":    { "id": "Ox0E", "cmd": "Ox81" },
+
+        "power":    { "id": "Ox0E", "cmd": "Ox41", "ack": "OxC1" }
     },
     "thermostat": {
-        "query":{ 
-            "id": 0x36, 
-            "cmd": 0x01, 
-        },
-        "state": {
-            "id": 0x36,
-            "cmd": 0x81,
-        },
-        "last": {},
-        "away": {
-            "id": 0x36,
-            "cmd": 0x46,
-            "ack": 0xC6,
-        },
-        "target": {
-            "id": 0x36,
-            "cmd": 0x44,
-            "ack": 0xC4,
-        },
-        "power": {
-            "id": 0x36,
-            "cmd": 0x43,
-            "ack": 0xC3,
-        },
-    },
-    "batch": {  # 안보임
-        "state": {"id": 0x33, "cmd": 0x81},
-        "press": {"id": 0x33, "cmd": 0x41, "ack": 0xC1},
+        "state":    { "id": "Ox36", "cmd": "Ox81" },
+        
+        "power":    { "id": "Ox36", "cmd": "Ox43", "ack": "OxC3" },
+        "away":    { "id": "Ox36", "cmd": "Ox45", "ack": "OxC5" },
+        "target":   { "id": "Ox36", "cmd": "Ox44", "ack": "OxC4" }
     },
     "plug": {
-        "state": {"id": 0x39, "cmd": 0x81},
-        "power": {"id": 0x39, "cmd": 0x41, "ack": 0xC1},
+        "state":    { "id": "Ox39", "cmd": "Ox81" },
+
+        "power":    { "id": "Ox39", "cmd": "Ox43", "ack": "OxC3" }
     },
+    "batch": {
+        "state":    { "id": "Ox33", "cmd": "Ox81" },
+
+        "press":    { "id": "Ox33", "cmd": "Ox41", "ack": "OxC1" }
+    }
 }
+
 
 DISCOVERY_DEVICE = {
     "ids": [
@@ -121,6 +98,15 @@ DISCOVERY_PAYLOAD = {
             "stat_t": "~/current/state",
             "unit_of_meas": "W",
         },
+    ],
+    "batch": [
+        {
+            "_intg": "button",
+            "~": "{prefix}/batch-elevator-down/{grp}_{rm}_{id}",
+            "name": "{prefix}_batch-elevator-down_{grp}_{rm}_{id}",
+            "cmd_t": "~/elevator-down/command",
+            "icon": "mdi:elevator-down"
+        }
     ],
     "cutoff": [
         {
