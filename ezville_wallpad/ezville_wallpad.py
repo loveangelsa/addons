@@ -182,6 +182,7 @@ DISCOVERY_PAYLOAD = {
             "unit_of_meas": "_",
             "val_tpl": "_",
         }
+    ],
     'batch': [ {
             "_intg": "elevator",
             "~": "{prefix}/elevator/{grp}_{rm}_{id}",
@@ -189,7 +190,7 @@ DISCOVERY_PAYLOAD = {
             "opt": True,
             "stat_t": "~/power/state",
             "cmd_t": "~/power/command",
-    } ]
+        } 
     ],
 }
 
