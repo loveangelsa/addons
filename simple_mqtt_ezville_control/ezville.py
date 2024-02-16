@@ -112,7 +112,7 @@ EW11_SEND_TOPIC = EW11_TOPIC + '/send'
 
 
 # Main Function
-def ezville_loop(config):
+def ezville_loop():
     
     # Log 생성 Flag
     debug = config['DEBUG_LOG']
@@ -970,4 +970,4 @@ if __name__ == '__main__':
     with open(config_dir + '/options.json') as file:
         CONFIG = json.load(file)
     
-    ezville_loop(config)
+    ezville_loop()
