@@ -21,25 +21,23 @@ import re
 RS485_DEVICE = {
     "light": {
         "state":    { "id": "Ox0E", "cmd": "Ox81" },
-
-        "power":    { "id": "Ox0E", "cmd": "Ox41", "ack": "OxC1" }
+        "last":     {},
+        "power":    { "id": "Ox0E", "cmd": "Ox41", "ack": "OxC1" },
     },
     "thermostat": {
         "state":    { "id": "Ox36", "cmd": "Ox81" },
-        
+        "last":     {},
         "power":    { "id": "Ox36", "cmd": "Ox43", "ack": "OxC3" },
         "away":    { "id": "Ox36", "cmd": "Ox45", "ack": "OxC5" },
-        "target":   { "id": "Ox36", "cmd": "Ox44", "ack": "OxC4" }
+        "target":   { "id": "Ox36", "cmd": "Ox44", "ack": "OxC4" },
     },
     "plug": {
         "state":    { "id": "Ox39", "cmd": "Ox81" },
-
-        "power":    { "id": "Ox39", "cmd": "Ox43", "ack": "OxC3" }
+        "power":    { "id": "Ox39", "cmd": "Ox43", "ack": "OxC1" },
     },
     "batch": {
         "state":    { "id": "Ox33", "cmd": "Ox81" },
-
-        "press":    { "id": "Ox33", "cmd": "Ox41", "ack": "OxC1" }
+        "press":    { "id": "Ox33", "cmd": "Ox41", "ack": "OxC1" },
     }
 }
 
