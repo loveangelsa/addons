@@ -11,9 +11,9 @@
   "startup": "application",
   "boot": "auto",
   "options": {
-    "DEBUG_LOG": ture,
-    "MQTT_LOG": ture,
-    "EW11_LOG": ture,
+    "DEBUG_LOG": true,
+    "MQTT_LOG": true,
+    "EW11_LOG": true,
     "mode": "socket",
     "mqtt_server": "192.168.0.113",
     "mqtt_id": "loveangelsa",
