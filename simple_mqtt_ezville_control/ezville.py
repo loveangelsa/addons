@@ -967,8 +967,8 @@ def ezville_loop(config):
         RESIDUE = ''
 
 
-# if __name__ == '__main__':
-#    with open(config_dir + '/options.json') as file:
-#        CONFIG = json.load(file)
-#    
-#    ezville_loop(CONFIG)
+ if __name__ == '__main__':
+    with open(config_dir + '/options.json') as file:
+        config = json.load(file)
+    
+    ezville_loop(config)
