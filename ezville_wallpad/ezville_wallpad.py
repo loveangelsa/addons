@@ -485,7 +485,7 @@ def mqtt_device(topics, payload):
             if idn.startswith("1_1_1") or idn.startswith("1_1_2") or idn.startswith("1_2_1"):
                 payload = 0xF1  # 특정 패턴에 따라 payload를 설정합니다.
             else:
-            payload = 0x01
+                payload = 0x01
         elif payload == "OFF":
             payload = 0x00
         length = 10
