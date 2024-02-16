@@ -119,7 +119,7 @@ DISCOVERY_PAYLOAD = {
             "curr_temp_t": "~/current/state",
             "away_stat_t": "~/away/state",
             "away_cmd_t": "~/away/command",
-            "modes": ["off", "heat"],
+            "modes": [ "off", "heat" ],
             "min_temp": 5,
             "max_temp": 40,
         }
@@ -194,8 +194,8 @@ QUERY_HEADER = {
 ACK_HEADER = {
     prop[cmd]["id"]: (device, prop[cmd]["ack"])
     for device, prop in RS485_DEVICE.items()
-    for cmd, code in prop.items()
-    if "ack" in code
+        for cmd, code in prop.items()
+            if "ack" in code
 }
 
 # KTDO: 제어 명령과 ACK의 Pair 저장
@@ -227,7 +227,7 @@ serial_ack = {}
 last_query = int(0).to_bytes(2, "big")
 last_topic_list = {}
 
-mqtt = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)
+mqtt = paho_mqtt.Client()
 mqtt_connected = False
 
 logger = logging.getLogger(__name__)
@@ -500,10 +500,6 @@ def mqtt_device(topics, payload):
         packet[7] = 0x00
         packet[8], packet[9] = serial_generate_checksum(packet)
     elif device == "thermostat":
-        if payload == "heat":
-            payload = 0x01
-        elif payload == "off":
-            payload = 0x00
         length = 8
         packet = bytearray(length)
         packet[0] = 0xF7
