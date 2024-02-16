@@ -20,25 +20,47 @@ import re
 
 RS485_DEVICE = {
     "light": {
-        "state":    { "id": "Ox0E", "cmd": "Ox81" },
-        "last":     {},
-        "power":    { "id": "Ox0E", "cmd": "Ox41", "ack": "OxC1" },
+        "state": {
+            "id": 0x0E,
+            "cmd": 0x81,
+        },
+        "last": {},
+        "power": {
+            "id": 0x0E,
+            "cmd": 0x41,
+            "ack": 0xC1,
+        },
     },
     "thermostat": {
-        "state":    { "id": "Ox36", "cmd": "Ox81" },
-        "last":     {},
-        "power":    { "id": "Ox36", "cmd": "Ox43", "ack": "OxC3" },
-        "away":    { "id": "Ox36", "cmd": "Ox45", "ack": "OxC5" },
-        "target":   { "id": "Ox36", "cmd": "Ox44", "ack": "OxC4" },
+        "state": {
+            "id": 0x36,
+            "cmd": 0x81,
+        },
+        "last": {},
+        "away": {
+            "id": 0x36,
+            "cmd": 0x45,
+            "ack": 0xC5,
+        },
+        "target": {
+            "id": 0x36,
+            "cmd": 0x44,
+            "ack": 0xC4,
+        },
+        "power": {
+            "id": 0x36,
+            "cmd": 0x43,
+            "ack": 0xC3,
+        },
+    },
+    "batch": {  # 안보임
+        "state": {"id": 0x33, "cmd": 0x81},
+        "press": {"id": 0x33, "cmd": 0x41, "ack": 0xC1},
     },
     "plug": {
-        "state":    { "id": "Ox39", "cmd": "Ox81" },
-        "power":    { "id": "Ox39", "cmd": "Ox43", "ack": "OxC1" },
+        "state": {"id": 0x39, "cmd": 0x81},
+        "power": {"id": 0x39, "cmd": 0x41, "ack": 0xC1},
     },
-    "batch": {
-        "state":    { "id": "Ox33", "cmd": "Ox81" },
-        "press":    { "id": "Ox33", "cmd": "Ox41", "ack": "OxC1" },
-    }
 }
 
 
@@ -96,34 +118,6 @@ DISCOVERY_PAYLOAD = {
             "stat_t": "~/current/state",
             "unit_of_meas": "W",
         },
-    ],
-    "batch": [
-        {
-            "_intg": "button",
-            "~": "{prefix}/batch-elevator-down/{grp}_{rm}_{id}",
-            "name": "{prefix}_batch-elevator-down_{grp}_{rm}_{id}",
-            "cmd_t": "~/elevator-down/command",
-            "icon": "mdi:elevator-down"
-        }
-    ],
-    "cutoff": [
-        {
-            "_intg": "switch",
-            "~": "{prefix}/cutoff/{idn}/power",
-            "name": "{prefix}_light_cutoff_{idn}",
-            "stat_t": "~/state",
-            "cmd_t": "~/command",
-        }
-    ],
-    "energy": [
-        {
-            "_intg": "sensor",
-            "~": "{prefix}/energy/{idn}",
-            "name": "_",
-            "stat_t": "~/current/state",
-            "unit_of_meas": "_",
-            "val_tpl": "_",
-        }
     ],
 }
 
