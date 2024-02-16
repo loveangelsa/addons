@@ -13,7 +13,7 @@
 
 	"options": {
 		"serial_mode": "socket",
-		"entrance_mode": "off",
+		"entrance_mode": "new",
 		"wallpad_mode": "on",
 		"intercom_mode": "off",
 		"serial": {
@@ -32,7 +32,7 @@
 			"port": 1883,
 			"need_login": true,
 			"user": "loveangelsa",
-			"passwd": "S",
+			"passwd": "Sk",
 			"discovery": true,
 			"prefix": "ezville"
 		},
