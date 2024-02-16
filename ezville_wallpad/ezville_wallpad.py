@@ -57,7 +57,7 @@ DISCOVERY_DEVICE = {
     "name": "ezville_wallpad",
     "mf": "EzVille",
     "mdl": "EzVille Wallpad",
-    "sw": "dongs0104/ha_addons/ezville_wallpad",
+    "sw": "loveangelsa/addons/ezville_wallpad",
 }
 
 DISCOVERY_PAYLOAD = {
