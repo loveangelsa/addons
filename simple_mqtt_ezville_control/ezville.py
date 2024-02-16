@@ -966,6 +966,8 @@ def ezville_loop(config):
         DISCOVERY_LIST = []
         RESIDUE = ''
 
-
- if __name__ == '__main__':
-    ezville_loop(config)
+if __name__ == '__main__':
+    with open(config_dir + '/options.json') as file:
+        CONFIG = json.load(file)
+    
+    ezville_loop(config):
