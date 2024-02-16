@@ -4,10 +4,8 @@
 # This is a part of EzVille Wallpad Addon for Home Assistant
 # Author: Dong SHIN <d0104.shin@gmail.com> 2024-02-15
 
-# This is a part of EzVille Wallpad Addon for Home Assistant
-# Author: Jongeun Han <loveangelsa@gmail.com> 2024-02-16
-
 import socket
+import threading
 import serial
 import paho.mqtt.client as paho_mqtt
 import json
@@ -16,15 +14,12 @@ import sys
 import time
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from collections import defaultdict
 import os.path
 import re
 
 RS485_DEVICE = {
     "light": {
-        "query": {
-            "id": 0x0E,
-            "cmd": 0x01,
-        },
         "state": {
             "id": 0x0E,
             "cmd": 0x81,
@@ -75,7 +70,7 @@ DISCOVERY_DEVICE = {
     "name": "ezville_wallpad",
     "mf": "EzVille",
     "mdl": "EzVille Wallpad",
-    "sw": "loveangelsa/addons/ezville_wallpad",
+    "sw": "dongs0104/ha_addons/ezville_wallpad",
 }
 
 DISCOVERY_PAYLOAD = {
@@ -142,15 +137,6 @@ DISCOVERY_PAYLOAD = {
             "val_tpl": "_",
         }
     ],
-    'batch': [ {
-            "_intg": "elevator",
-            "~": "{prefix}/elevator/{grp}_{rm}_{id}",
-            "name": "{prefix}_elevator_{grp}_{rm}_{id}",
-            "opt": True,
-            "stat_t": "~/power/state",
-            "cmd_t": "~/power/command",
-        } 
-    ],
 }
 
 STATE_HEADER = {
@@ -158,26 +144,19 @@ STATE_HEADER = {
     for device, prop in RS485_DEVICE.items()
     if "state" in prop
 }
-QUERY_HEADER = {
-    prop["query"]["id"]: (device, prop["query"]["cmd"])
-    for device, prop in RS485_DEVICE.items()
-    if "query" in prop
-}
 # 제어 명령의 ACK header만 모음
 ACK_HEADER = {
     prop[cmd]["id"]: (device, prop[cmd]["ack"])
     for device, prop in RS485_DEVICE.items()
-        for cmd, code in prop.items()
-            if "ack" in code
+    for cmd, code in prop.items()
+    if "ack" in code
 }
-
 # KTDO: 제어 명령과 ACK의 Pair 저장
-ACK_MAP = {}
+
+ACK_MAP = defaultdict(lambda: defaultdict(dict))
 for device, prop in RS485_DEVICE.items():
     for cmd, code in prop.items():
         if "ack" in code:
-            ACK_MAP[code["id"]] = {}
-            ACK_MAP[code["id"]][code["cmd"]] = {}
             ACK_MAP[code["id"]][code["cmd"]] = code["ack"]
 
 # KTDO: 아래 미사용으로 코멘트 처리
@@ -200,7 +179,7 @@ serial_ack = {}
 last_query = int(0).to_bytes(2, "big")
 last_topic_list = {}
 
-mqtt = paho_mqtt.Client()
+mqtt = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)
 mqtt_connected = False
 
 logger = logging.getLogger(__name__)
@@ -433,7 +412,6 @@ def mqtt_device(topics, payload):
     device = topics[1]
     idn = topics[2]
     cmd = topics[3]
-
     # HA에서 잘못 보내는 경우 체크
     if device not in RS485_DEVICE:
         logger.error("    unknown device!")
