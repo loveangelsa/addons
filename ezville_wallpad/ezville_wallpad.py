@@ -39,8 +39,8 @@ RS485_DEVICE = {
         "last": {},
         "away": {
             "id": 0x36,
-            "cmd": 0x46,
-            "ack": 0xC6,
+            "cmd": 0x45,
+            "ack": 0xC5,
         },
         "target": {
             "id": 0x36,
@@ -428,6 +428,10 @@ def mqtt_device(topics, payload):
         packet[7] = 0x00
         packet[8], packet[9] = serial_generate_checksum(packet)
     elif device == "thermostat":
+        if payload == "heat":
+            payload = 0x01
+        elif payload == "off":
+            payload = 0x00
         length = 8
         packet = bytearray(length)
         packet[0] = 0xF7
@@ -688,40 +692,32 @@ def serial_receive_state(device, packet):
     elif device == "thermostat":
         grp_id = int(packet[2] >> 4)
         room_count = int((int(packet[4]) - 5) / 2)
-        
-        for id in range(1, room_count + 1):
-            topic1 = "{}/{}/{}_{}/power/state".format(prefix, device, grp_id, id)
-            topic2 = "{}/{}/{}_{}/away/state".format(prefix, device, grp_id, id)
-            topic3 = "{}/{}/{}_{}/target/state".format(prefix, device, grp_id, id)
-            topic4 = "{}/{}/{}_{}/current/state".format(prefix, device, grp_id, id)
-            
-            if ((packet[6] & 0x1F) >> (room_count - id)) & 1:
+
+        for thermostat_id in range(1, room_count + 1):
+            if ((packet[6] & 0x1F) >> (room_count - thermostat_id)) & 1:
                 value1 = "ON"
             else:
                 value1 = "OFF"
-            if ((packet[7] & 0x1F) >> (room_count - id)) & 1:
+            if ((packet[7] & 0x1F) >> (room_count - thermostat_id)) & 1:
                 value2 = "ON"
             else:
                 value2 = "OFF"
-            value3 = packet[8 + id * 2]
-            value4 = packet[9 + id * 2]
-            
-            if last_topic_list.get(topic1) != value1:
-                logger.info("publish to HA:   {} = {} ({})".format(topic1, value1, packet.hex()))
-                mqtt.publish(topic1, value1)
-                last_topic_list[topic1] = value1
-            if last_topic_list.get(topic2) != value2:
-                logger.info("publish to HA:   {} = {} ({})".format(topic2, value2, packet.hex()))
-                mqtt.publish(topic2, value2)
-                last_topic_list[topic2] = value2
-            if last_topic_list.get(topic3) != value3:
-                logger.info("publish to HA:   {} = {} ({})".format(topic3, value3, packet.hex()))
-                mqtt.publish(topic3, value3)
-                last_topic_list[topic3] = value3
-            if last_topic_list.get(topic4) != value4:
-                logger.info("publish to HA:   {} = {} ({})".format(topic4, value4, packet.hex()))
-                mqtt.publish(topic4, value4)
-                last_topic_list[topic4] = value4
+            for sub_topic, value in zip(
+                ["mode", "away", "target", "current"],
+                [
+                    value1,
+                    value2,
+                    packet[8 + thermostat_id * 2],
+                    packet[9 + thermostat_id * 2],
+                ],
+            ):
+                topic = f"{prefix}/{device}/{grp_id}_{thermostat_id}/{sub_topic}/state"
+                if last_topic_list.get(topic) != value:
+                    logger.debug(
+                        "publish to HA:   %s = %s (%s)", topic, value, packet.hex()
+                    )
+                    mqtt.publish(topic, value)
+                    last_topic_list[topic] = value
                 
     elif device == "plug":
         grp_id = int(packet[2] >> 4)
