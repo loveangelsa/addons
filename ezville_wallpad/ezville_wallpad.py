@@ -89,6 +89,7 @@ DISCOVERY_PAYLOAD = {
         "_intg": "climate",
         "~": "{prefix}/thermostat/{grp}_{id}",
         "name": "{prefix}_thermostat_{grp}_{id}",
+        "mode_cmd_t": "~/power/command",
         "mode_stat_t": "~/power/state",
         "temp_stat_t": "~/target/state",
         "temp_cmd_t": "~/target/command",
