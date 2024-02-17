@@ -39,8 +39,8 @@ RS485_DEVICE = {
         "last": {},
         "away": {
             "id": 0x36,
-            "cmd": 0x46,
-            "ack": 0xC6,
+            "cmd": 0x45,
+            "ack": 0xC5,
         },
         "target": {
             "id": 0x36,
@@ -95,7 +95,7 @@ DISCOVERY_PAYLOAD = {
         "curr_temp_t": "~/current/state",
         "away_stat_t": "~/away/state",
         "away_cmd_t": "~/away/command",
-        "modes": [ "off", "heat" ],
+        "modes": [ "heat", "off" ],
         "min_temp": 5,
         "max_temp": 40,
     } ],
