@@ -11,7 +11,7 @@
   "startup": "application",
   "boot": "auto",
   "options": {
-    "DEBUG_LOG": false,
+    "DEBUG_LOG": true,
     "MQTT_LOG": false,
     "EW11_LOG": false,
     "mode": "socket",
