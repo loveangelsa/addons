@@ -14,7 +14,7 @@
     "DEBUG_LOG": false,
     "MQTT_LOG": false,
     "EW11_LOG": false,
-    "mode": "mqtt",
+    "mode": "socket",
     "mqtt_server": "192.168.0.137",
     "mqtt_id": "loveangelsa",
     "mqtt_password": "password",
