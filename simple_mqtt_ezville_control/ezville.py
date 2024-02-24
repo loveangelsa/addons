@@ -808,7 +808,7 @@ def ezville_loop(config):
     # MQTT 통신
     # https://cafe.naver.com/koreassistant/16110 내용보고 추가, 2024.02.24
     from paho.mqtt.enums import CallbackAPIVersion
-    mqtt_client = mqtt.Client('')
+    mqtt_client = mqtt.Client(CallbackAPIVersion.VERSION2,'mqtt-ezville')
     mqtt_client.username_pw_set(config['mqtt_id'], config['mqtt_password'])
     mqtt_client.on_connect = on_connect
     mqtt_client.on_disconnect = on_disconnect
