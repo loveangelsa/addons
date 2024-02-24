@@ -13,7 +13,7 @@
   "options": {
     "DEBUG_LOG": true,
     "MQTT_LOG": true,
-    "EW11_LOG": treu,
+    "EW11_LOG": true,
     "mode": "socket",
     "mqtt_server": "192.168.0.137",
     "mqtt_id": "loveangelsa",
