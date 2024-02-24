@@ -12,22 +12,12 @@ from queue import Queue
 
 # DEVICE 별 패킷 정보
 RS485_DEVICE = {
-    'light': {
-        'state':    { 'id': '0E', 'cmd': '81' },
-
-        'power':    { 'id': '0E', 'cmd': '41', 'ack': 'C1' }
-    },
     'thermostat': {
         'state':    { 'id': '36', 'cmd': '81' },
         
         'power':    { 'id': '36', 'cmd': '43', 'ack': 'C3' },
         'away':    { 'id': '36', 'cmd': '45', 'ack': 'C5' },
         'target':   { 'id': '36', 'cmd': '44', 'ack': 'C4' }
-    },
-    'plug': {
-        'state':    { 'id': '50', 'cmd': '81' },
-
-        'power':    { 'id': '50', 'cmd': '43', 'ack': 'C3' }
     },
     'gasvalve': {
         'state':    { 'id': '12', 'cmd': '81' },
@@ -52,14 +42,6 @@ DISCOVERY_DEVICE = {
 
 # MQTT Discovery를 위한 Payload 정보
 DISCOVERY_PAYLOAD = {
-    'light': [ {
-        '_intg': 'light',
-        '~': 'ezville/light_{:0>2d}_{:0>2d}',
-        'name': 'ezville_light_{:0>2d}_{:0>2d}',
-        'opt': True,
-        'stat_t': '~/power/state',
-        'cmd_t': '~/power/command'
-    } ],
     'thermostat': [ {
         '_intg': 'climate',
         '~': 'ezville/thermostat_{:0>2d}_{:0>2d}',
@@ -73,28 +55,6 @@ DISCOVERY_PAYLOAD = {
         'modes': [ 'heat', 'off' ],     # 외출 모드는 off로 매핑
         'min_temp': '5',
         'max_temp': '40'
-    } ],
-    'plug': [ {
-        '_intg': 'switch',
-        '~': 'ezville/plug_{:0>2d}_{:0>2d}',
-        'name': 'ezville_plug_{:0>2d}_{:0>2d}',
-        'stat_t': '~/power/state',
-        'cmd_t': '~/power/command',
-        'icon': 'mdi:leaf'
-    },
-    {
-        '_intg': 'binary_sensor',
-        '~': 'ezville/plug_{:0>2d}_{:0>2d}',
-        'name': 'ezville_plug-automode_{:0>2d}_{:0>2d}',
-        'stat_t': '~/auto/state',
-        'icon': 'mdi:leaf'
-    },
-    {
-        '_intg': 'sensor',
-        '~': 'ezville/plug_{:0>2d}_{:0>2d}',
-        'name': 'ezville_plug_{:0>2d}_{:0>2d}_powermeter',
-        'stat_t': '~/current/state',
-        'unit_of_meas': 'W'
     } ],
     'gasvalve': [ {
         '_intg': 'switch',
@@ -449,10 +409,6 @@ def ezville_loop(config):
                                     # 외출 모드는 off로 
                                     elif onoff_state[8 - rid] == '0' and away_state[8 - rid] == '1':
                                         onoff = 'off'
-#                                    elif onoff_state[8 - rid] == '0' and away_state[8 - rid] == '0':
-#                                        onoff = 'off'
-#                                    else:
-#                                        onoff = 'off'
 
                                     await update_state(name, 'power', rid, src, onoff)
                                     await update_state(name, 'curTemp', rid, src, curT)
@@ -659,15 +615,7 @@ def ezville_loop(config):
                             statcmd = [key, value]
                            
                             await CMD_QUEUE.put({'sendcmd': sendcmd, 'recvcmd': recvcmd, 'statcmd': statcmd})
-                        
-#                        elif value == 'off':
-#                        
-#                            sendcmd = checksum('F7' + RS485_DEVICE[device]['power']['id'] + '1' + str(idx) + RS485_DEVICE[device]['power']['cmd'] + '01000000')
-#                            recvcmd = 'F7' + RS485_DEVICE[device]['power']['id'] + '1' + str(idx) + RS485_DEVICE[device]['power']['ack']
-#                            statcmd = [key, value]
-#                           
-#                            await CMD_QUEUE.put({'sendcmd': sendcmd, 'recvcmd': recvcmd, 'statcmd': statcmd})                    
-                                               
+                
                         if debug:
                             log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}, statcmd: {}'.format(sendcmd, recvcmd, statcmd))
                                     
@@ -682,24 +630,6 @@ def ezville_loop(config):
                                
                         if debug:
                             log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}, statcmd: {}'.format(sendcmd, recvcmd, statcmd))
-
-#                    elif device == 'Fan':
-#                        if topics[2] == 'power':
-#                            sendcmd = DEVICE_LISTS[device][idx].get('command' + value)
-#                            recvcmd = DEVICE_LISTS[device][idx].get('state' + value) if value == 'ON' else [
-#                                DEVICE_LISTS[device][idx].get('state' + value)]
-#                            QUEUE.append({'sendcmd': sendcmd, 'recvcmd': recvcmd, 'count': 0})
-#                            if debug:
-#                                log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}'.format(sendcmd, recvcmd))
-#                        elif topics[2] == 'speed':
-#                            speed_list = ['LOW', 'MEDIUM', 'HIGH']
-#                            if value in speed_list:
-#                                index = speed_list.index(value)
-#                                sendcmd = DEVICE_LISTS[device][idx]['CHANGE'][index]
-#                                recvcmd = [DEVICE_LISTS[device][idx]['stateON'][index]]
-#                                QUEUE.append({'sendcmd': sendcmd, 'recvcmd': recvcmd, 'count': 0})
-#                                if debug:
-#                                    log('[DEBUG] Queued ::: sendcmd: {}, recvcmd: {}'.format(sendcmd, recvcmd))
 
                 elif device == 'light':                         
                     pwr = '01' if value == 'ON' else '00'
@@ -751,11 +681,7 @@ def ezville_loop(config):
                         elup_state = '1'
                     elif topics[2] == 'elevator-down':
                         eldown_state = '1'
-# 그룹 조명과 외출 모드 설정은 테스트 후에 추가 구현                                                
-#                    elif topics[2] == 'group':
-#                        group_state = '1'
-#                    elif topics[2] == 'outing':
-#                        out_state = '1'
+
                             
                     CMD = '{:0>2X}'.format(int('00' + eldown_state + elup_state + '0' + group_state + out_state + '0', 2))
                     
@@ -976,7 +902,9 @@ def ezville_loop(config):
 
         
     # MQTT 통신
-    mqtt_client = mqtt.Client('mqtt-ezville')
+    # https://cafe.naver.com/koreassistant/16110 내용보고 추가, 2024.02.24
+    from paho.mqtt.enums import CallbackAPIVersion
+    mqtt_client = mqtt.Client(CallbackAPIVersion.VERSION1, 'mqtt-ezville')
     mqtt_client.username_pw_set(config['mqtt_id'], config['mqtt_password'])
     mqtt_client.on_connect = on_connect
     mqtt_client.on_disconnect = on_disconnect
