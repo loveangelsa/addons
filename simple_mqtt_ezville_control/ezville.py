@@ -51,6 +51,8 @@ DISCOVERY_PAYLOAD = {
             "temp_stat_t": "~/setTemp/state",
             "temp_cmd_t": "~/setTemp/command",
             "curr_temp_t": "~/curTemp/state",
+            "away_stat_t": "~/away/state",
+            "away_cmd_t": "~/away/command",
             "modes": ["heat", "off"],  # 외출 모드는 off로 매핑
             "min_temp": "5",
             "max_temp": "40",
